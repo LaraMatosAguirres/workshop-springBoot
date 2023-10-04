@@ -1,6 +1,6 @@
-package resources;
+package com.educandoweb.course2.resources;
 
-import entities.User;
+import com.educandoweb.course2.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
