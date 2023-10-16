@@ -9,13 +9,14 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "tb_order_item")
+@Entity /* -> mapeamento para uma tabela no banco de dados*/
+@Table(name = "tb_order_item") /* -> personalização do nome da tabela*/
 public class OrderItem implements Serializable {
+    /* conversão em bytes para ser armazenado no banco de dados*/
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private OrderItemPK id = new OrderItemPK();
+    @EmbeddedId /* -> indica uma chave primária composta de mais de um atributo*/
+    private OrderItemPK id = new OrderItemPK(); /* -> declaração  da chave primária composta*/
 
     private Integer quantity;
     private Double price;
@@ -39,6 +40,7 @@ public class OrderItem implements Serializable {
     public void setOrder(Order order) {
         id.setOrder(order);
     }
+
 
     public Product getProduct() {
         return id.getProduct();

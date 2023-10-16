@@ -28,3 +28,4 @@ INSERT INTO TB_ORDER_ITEM  (price, quantity, product_id, order_id) VALUES ('1250
 INSERT INTO TB_ORDER_ITEM  (price, quantity, product_id, order_id) VALUES ('1250.0', 2, 3, 2);
 INSERT INTO TB_ORDER_ITEM  (price, quantity, product_id, order_id) VALUES ('100.99', 2, 5, 3);
 
+INSERT INTO TB_PAYMENT   (moment, order_id) VALUES ('2019-06-20T19:53:07Z', 1);

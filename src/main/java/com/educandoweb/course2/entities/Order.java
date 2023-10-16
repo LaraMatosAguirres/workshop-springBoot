@@ -12,25 +12,29 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Table(name = "tb_order")
+@Entity /* -> indica um mapeamento para uma tabela no banco de dados, criação de uma tabela espelho*/
+@Table(name = "tb_order")/* -> personalização do nome da tabela*/
 public class Order implements Serializable{
+    /* conversão dos obejtos para bytes para serem armazenados no banco de dadoos*/
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id /* chave primária*/
+    @GeneratedValue(strategy = GenerationType.IDENTITY)/* declaração da estratégia da chave primária, estratégia automáatica*/
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'T' HH:mm:ss 'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'T' HH:mm:ss 'Z'", timezone = "GMT") /*-> controla a formatação de datas*/
     private Instant moment;
 
     private Integer orderStatus;
 
-    @ManyToOne
-    @JoinColumn( name ="client_id")
+    @ManyToOne /* -> Relacionamento com a classe User representado pelo nome client*/
+    @JoinColumn( name ="client_id") /* -> define a chave estrangeira e o nome da coluna na tabela no banco de dados*/
     private User client;
 
-    @OneToMany(mappedBy = "id.order")
+    @OneToMany(mappedBy = "id.order")/* -> relacionamento com a classe OrderItem, buscando os dados por id.order*/
     private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order(){
     }
@@ -63,6 +67,7 @@ public class Order implements Serializable{
         return OrderStatus.valueOf(orderStatus);
     }
 
+    /* método testando se a os nomes que correspondem ao enum são nulos ou não */
     public void setOrderStatus(OrderStatus orderStatus) {
         if(orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
@@ -75,6 +80,14 @@ public class Order implements Serializable{
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Set<OrderItem> getItems() {

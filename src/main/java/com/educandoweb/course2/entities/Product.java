@@ -1,27 +1,33 @@
 package com.educandoweb.course2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Table(name = "tb_product")
+@Entity /* marcação para fazer uma tabela espelho no banco de dados */
+@Table(name = "tb_product") /* personalização do nome da tabela */
 public class Product implements Serializable {
+    /* transformação em bytes para armazenamento dos objetos na tabela */
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id /* chave primária */
+    @GeneratedValue(strategy = GenerationType.IDENTITY) /* definição de estratégia de  geração automática da chave primária */
     private Long id;
     private String name;
     private String description;
     private Double price;
     private String imgUrl;
 
-    @ManyToMany
+    @ManyToMany /* relacionamento com a classe Category */
     @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany (mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
     public Product(){
     }
 
@@ -75,6 +81,16 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> set = new HashSet<>();
+        for (OrderItem x : items) {
+            set.add(x.getOrder());
+        }
+
+        return set;
     }
 
     @Override
