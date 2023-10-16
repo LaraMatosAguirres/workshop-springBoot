@@ -13,6 +13,9 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
+    private UserRepository repository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public List<User> findAll(){
@@ -22,6 +25,10 @@ public class UserService {
     public User findById(Long id){
         Optional<User> obj = userRepository.findById(id);
         return obj.get();
+    }
+
+    public User insert(User obj){
+        return repository.save(obj);
     }
 
 }
