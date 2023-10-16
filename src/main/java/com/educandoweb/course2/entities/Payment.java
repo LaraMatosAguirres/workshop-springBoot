@@ -1,5 +1,7 @@
 package com.educandoweb.course2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,6 +18,7 @@ public class Payment implements Serializable {
 
     private Date moment;
 
+    @JsonIgnore
     @OneToOne
     @MapsId
     private Order order;
