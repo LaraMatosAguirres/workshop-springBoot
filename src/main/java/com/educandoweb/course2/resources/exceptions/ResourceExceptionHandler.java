@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
 import java.time.Instant;
 
 @ControllerAdvice // -> indica que a classe é um controlador de exceções global, lida com todo tipo de exceção
@@ -20,5 +21,13 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI()); // -> encapsula as informações do erro em uma classe personaliza
         return ResponseEntity.status(status).body(err);
         // Retorna uma instância de ResponseEntity que contém o objeto StandardError como corpo da resposta e o status HTTP definido anteriormente. Isso enviará uma resposta HTTP com o código de status "Not Found" e as informações de erro apropriadas.
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> databaseException(DatabaseException e, HttpServletRequest request){
+        String error = "Delete not concret ";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
     }
 }
